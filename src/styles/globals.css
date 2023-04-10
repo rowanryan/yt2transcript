@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body {
+  @apply bg-dark;
+}
+
+.light_border {
+  @apply border;
+  @apply border-white/10;
+  @apply rounded;
+}
