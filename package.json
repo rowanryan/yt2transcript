@@ -9,9 +9,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tabler/icons-react": "^2.15.0",
+    "nanoid": "^4.0.2",
     "next": "^13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.9",
+    "ytdl-core": "^4.11.3",
     "zod": "^3.21.4"
   },
   "devDependencies": {
