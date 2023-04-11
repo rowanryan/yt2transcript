@@ -27,7 +27,7 @@ const VideoForm = ({ addToQueue }: Props) => {
       videoId,
       id: nanoid(),
       videoName: values.videoName || values.videoUrl,
-      processing: true,
+      processing: false,
       done: false,
       step: 1,
     };
