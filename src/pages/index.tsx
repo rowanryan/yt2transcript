@@ -54,7 +54,7 @@ const Home: NextPage = () => {
         <title>Youtube 2 Transcript</title>
       </Head>
 
-      <main className="px-4 pt-12 md:pt-24">
+      <main className="px-4 py-12 md:py-16">
         <div className="container mx-auto max-w-[40rem]">
           <div className="mb-8">
             <h1 className="mb-2 text-center text-3xl font-bold text-white md:mb-3 md:text-5xl">
@@ -125,7 +125,9 @@ const Home: NextPage = () => {
           <div className="light_border my-6 md:my-8" />
 
           <h3 className="mb-1 font-bold text-white md:text-lg">Queue</h3>
-          <Queue queue={queue} removeFromQueue={removeFromQueue} />
+          <div className="mb-4 md:mb-8">
+            <Queue queue={queue} removeFromQueue={removeFromQueue} />
+          </div>
 
           <h3 className="mb-1 font-bold text-white md:text-lg">
             Generated text

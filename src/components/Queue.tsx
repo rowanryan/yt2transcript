@@ -10,7 +10,7 @@ type Props = {
 const Queue = ({ queue, removeFromQueue }: Props) => {
   return (
     <>
-      <div className="light_border mb-8 md:mb-16">
+      <div className="light_border">
         {queue.length < 1 ? (
           <div className="px-4 py-6">
             <p className="text-center text-sm text-white/70">
