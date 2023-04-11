@@ -20,8 +20,8 @@ const Queue = ({ queue, removeFromQueue }: Props) => {
         ) : (
           <table className="w-full table-auto">
             <tbody className="w-full divide-y divide-white/10">
-              {queue.map((task) => (
-                <tr>
+              {queue.map((task, index) => (
+                <tr key={index}>
                   <td className="px-4 py-3">
                     <a
                       href={`https://www.youtube.com/watch?v=${task.videoId}`}

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import type { Task } from "@/utils/types";
@@ -17,6 +17,59 @@ const Home: NextPage = () => {
   const removeFromQueue = useCallback((id: string) => {
     return setQueue((tasks) => tasks.filter((task) => task.id !== id));
   }, []);
+
+  const executeTask = async () => {
+    const todo = queue.filter((task) => !task.done && !task.processing);
+    const currentTask = todo[0];
+
+    if (!!currentTask) {
+      setQueue((tasks) =>
+        tasks.map((task) => {
+          if (task.id === currentTask.id) {
+            return {
+              ...task,
+              processing: true,
+            } as Task;
+          }
+
+          return task;
+        })
+      );
+
+      try {
+        const response = await fetch("/api/downloadaudio", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(currentTask),
+        });
+
+        console.log(await response.json());
+      } catch (error) {
+        console.log(error);
+      }
+
+      setQueue((tasks) =>
+        tasks.map((task) => {
+          if (task.id === currentTask.id) {
+            return {
+              ...task,
+              step: 2,
+            } as Task;
+          }
+
+          return task;
+        })
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (queue.length > 0) {
+      executeTask();
+    }
+  }, [queue]);
 
   return (
     <>
