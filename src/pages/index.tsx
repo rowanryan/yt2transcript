@@ -18,7 +18,7 @@ const Home: NextPage = () => {
     return setQueue((tasks) => tasks.filter((task) => task.id !== id));
   }, []);
 
-  const executeTask = async (task?: Task) => {
+  const executeStep1 = async (task?: Task) => {
     const todo = queue.filter(
       (task) => !task.done && !task.processing && !task.error
     );
@@ -83,7 +83,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (queue.length > 0) {
-      executeTask();
+      executeStep1();
     }
   }, [queue]);
 
@@ -114,7 +114,7 @@ const Home: NextPage = () => {
             <Queue
               queue={queue}
               removeFromQueue={removeFromQueue}
-              retry={executeTask}
+              retry={executeStep1}
             />
           </div>
 
