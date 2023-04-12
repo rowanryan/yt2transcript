@@ -12,11 +12,11 @@ export default async function handler(
 
   try {
     const folder = "./audio";
-    const output = path.join(folder, `${task.videoId}.mp3`);
+    const output = path.join(folder, `${task.videoId}.webm`);
 
     await new Promise((resolve) => {
       ytdl(task.videoId, {
-        filter: "audioonly",
+        filter: (format) => format.container === "webm" && format.hasAudio,
         quality: "lowestaudio",
       })
         .pipe(fs.createWriteStream(output))
