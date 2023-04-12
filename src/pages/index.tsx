@@ -66,19 +66,23 @@ const Home: NextPage = () => {
         );
       }
 
-      // setQueue((tasks) =>
-      //   tasks.map((task) => {
-      //     if (task.id === currentTask.id) {
-      //       return {
-      //         ...task,
-      //         step: 2,
-      //       } as Task;
-      //     }
-
-      //     return task;
-      //   })
-      // );
+      await executeStep2(currentTask);
     }
+  };
+
+  const executeStep2 = async (currentTask: Task) => {
+    setQueue((tasks) =>
+      tasks.map((task) => {
+        if (task.id === currentTask.id) {
+          return {
+            ...task,
+            step: 2,
+          } as Task;
+        }
+
+        return task;
+      })
+    );
   };
 
   useEffect(() => {
