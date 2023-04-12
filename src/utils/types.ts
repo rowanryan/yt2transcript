@@ -5,4 +5,5 @@ export type Task = {
   processing: boolean;
   done: boolean;
   step: 1 | 2;
+  error?: string;
 };

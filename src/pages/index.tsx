@@ -18,9 +18,11 @@ const Home: NextPage = () => {
     return setQueue((tasks) => tasks.filter((task) => task.id !== id));
   }, []);
 
-  const executeTask = async () => {
-    const todo = queue.filter((task) => !task.done && !task.processing);
-    const currentTask = todo[0];
+  const executeTask = async (task?: Task) => {
+    const todo = queue.filter(
+      (task) => !task.done && !task.processing && !task.error
+    );
+    const currentTask = task || todo[0];
 
     if (!!currentTask) {
       setQueue((tasks) =>
@@ -29,6 +31,7 @@ const Home: NextPage = () => {
             return {
               ...task,
               processing: true,
+              error: undefined,
             } as Task;
           }
 
@@ -48,20 +51,33 @@ const Home: NextPage = () => {
         console.log(await response.json());
       } catch (error) {
         console.log(error);
+        return setQueue((tasks) =>
+          tasks.map((task) => {
+            if (task.id === currentTask.id) {
+              return {
+                ...task,
+                processing: false,
+                error: "Something went wrong. Please try again.",
+              } as Task;
+            }
+
+            return task;
+          })
+        );
       }
 
-      setQueue((tasks) =>
-        tasks.map((task) => {
-          if (task.id === currentTask.id) {
-            return {
-              ...task,
-              step: 2,
-            } as Task;
-          }
+      // setQueue((tasks) =>
+      //   tasks.map((task) => {
+      //     if (task.id === currentTask.id) {
+      //       return {
+      //         ...task,
+      //         step: 2,
+      //       } as Task;
+      //     }
 
-          return task;
-        })
-      );
+      //     return task;
+      //   })
+      // );
     }
   };
 
@@ -95,7 +111,11 @@ const Home: NextPage = () => {
 
           <h3 className="mb-1 font-bold text-white md:text-lg">Queue</h3>
           <div className="mb-4 md:mb-8">
-            <Queue queue={queue} removeFromQueue={removeFromQueue} />
+            <Queue
+              queue={queue}
+              removeFromQueue={removeFromQueue}
+              retry={executeTask}
+            />
           </div>
 
           <h3 className="mb-1 font-bold text-white md:text-lg">

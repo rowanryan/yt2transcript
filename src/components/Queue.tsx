@@ -1,13 +1,19 @@
 import type { Task } from "@/utils/types";
 
-import { IconTrashFilled, IconLoader2, IconChecks } from "@tabler/icons-react";
+import {
+  IconTrashFilled,
+  IconLoader2,
+  IconChecks,
+  IconReload,
+} from "@tabler/icons-react";
 
 type Props = {
   queue: Task[];
+  retry: (task?: Task) => unknown;
   removeFromQueue: (id: string) => unknown;
 };
 
-const Queue = ({ queue, removeFromQueue }: Props) => {
+const Queue = ({ queue, removeFromQueue, retry }: Props) => {
   return (
     <>
       <div className="light_border">
@@ -43,6 +49,12 @@ const Queue = ({ queue, removeFromQueue }: Props) => {
                             : "Transcribing audio through Whisper..."}
                         </p>
                       )}
+
+                      {task.error && (
+                        <p className="mt-1 text-xs text-red-500">
+                          {task.error}
+                        </p>
+                      )}
                     </a>
                   </td>
 
@@ -58,6 +70,13 @@ const Queue = ({ queue, removeFromQueue }: Props) => {
                           className="animate-spin text-white"
                         />
                       </div>
+                    ) : task.error ? (
+                      <button
+                        className="light_border bg-dark p-1 text-sm text-white transition-colors duration-150 ease-linear hover:bg-white hover:text-dark"
+                        onClick={() => retry(task)}
+                      >
+                        <IconReload size={14} />
+                      </button>
                     ) : (
                       <button
                         className="light_border bg-dark p-1 text-sm text-white transition-colors duration-150 ease-linear hover:bg-white hover:text-dark"
