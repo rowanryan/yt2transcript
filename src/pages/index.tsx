@@ -89,19 +89,6 @@ const Home: NextPage = () => {
             </h2>
           </div>
 
-          <label className="text-xs font-medium text-white/60">
-            OpenAI API key
-          </label>
-
-          <input
-            type="text"
-            placeholder="OpenAI API key"
-            className="light_border block w-full bg-dark px-4 py-2 text-white"
-            onChange={(evt) => setAPIKey(evt.target.value)}
-          />
-
-          <div className="light_border my-6" />
-
           <VideoForm addToQueue={addToQueue} />
 
           <div className="light_border my-6 md:my-8" />
