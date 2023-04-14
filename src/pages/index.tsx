@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
-import type { Task } from "@/utils/types";
+import type { GeneratedText, Task } from "@/utils/types";
 
 import Queue from "@/components/Queue";
 import VideoForm from "@/components/VideoForm";
+import Output from "@/components/Output";
 
 const Home: NextPage = () => {
   const [queue, setQueue] = useState<Task[]>([]);
+  const [generatedTexts, setGeneratedTexts] = useState<GeneratedText[]>([]);
 
   const addToQueue = useCallback((newTasks: Task[]) => {
     return setQueue((tasks) => [...tasks, ...newTasks]);
@@ -92,7 +94,29 @@ const Home: NextPage = () => {
         body: JSON.stringify(fileName),
       });
 
-      console.log(await response.json());
+      const data: { ok: boolean; text: string } = await response.json();
+
+      setQueue((tasks) =>
+        tasks.map((task) => {
+          if (task.id === currentTask.id) {
+            return {
+              ...task,
+              processing: false,
+              done: true,
+            } as Task;
+          }
+
+          return task;
+        })
+      );
+
+      return setGeneratedTexts((generatedTexts) => [
+        ...generatedTexts,
+        {
+          task: currentTask,
+          text: data.text,
+        },
+      ]);
     } catch (error) {
       console.log(error);
       return setQueue((tasks) =>
@@ -109,20 +133,6 @@ const Home: NextPage = () => {
         })
       );
     }
-
-    setQueue((tasks) =>
-      tasks.map((task) => {
-        if (task.id === currentTask.id) {
-          return {
-            ...task,
-            processing: false,
-            done: true,
-          } as Task;
-        }
-
-        return task;
-      })
-    );
   };
 
   useEffect(() => {
@@ -165,11 +175,7 @@ const Home: NextPage = () => {
           <h3 className="mb-1 font-bold text-white md:text-lg">
             Generated text
           </h3>
-          <div className="light_border px-4 py-6">
-            <p className="text-center text-sm text-white/70">
-              No text has been generated yet...
-            </p>
-          </div>
+          <Output output={generatedTexts} />
         </div>
       </main>
     </>

@@ -7,3 +7,8 @@ export type Task = {
   step: 1 | 2;
   error?: string;
 };
+
+export type GeneratedText = {
+  task: Task;
+  text: string;
+};
