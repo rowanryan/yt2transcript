@@ -7,7 +7,6 @@ import Queue from "@/components/Queue";
 import VideoForm from "@/components/VideoForm";
 
 const Home: NextPage = () => {
-  const [apiKey, setAPIKey] = useState<string>();
   const [queue, setQueue] = useState<Task[]>([]);
 
   const addToQueue = useCallback((newTasks: Task[]) => {
