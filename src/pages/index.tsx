@@ -48,7 +48,9 @@ const Home: NextPage = () => {
           body: JSON.stringify(currentTask),
         });
 
-        console.log(await response.json());
+        const data = await response.json();
+
+        await executeStep2(currentTask, data.file);
       } catch (error) {
         console.log(error);
         return setQueue((tasks) =>
@@ -65,18 +67,57 @@ const Home: NextPage = () => {
           })
         );
       }
-
-      await executeStep2(currentTask);
     }
   };
 
-  const executeStep2 = async (currentTask: Task) => {
+  const executeStep2 = async (currentTask: Task, fileName: string) => {
     setQueue((tasks) =>
       tasks.map((task) => {
         if (task.id === currentTask.id) {
           return {
             ...task,
             step: 2,
+          } as Task;
+        }
+
+        return task;
+      })
+    );
+
+    try {
+      const response = await fetch("/api/transcribeaudio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(fileName),
+      });
+
+      console.log(await response.json());
+    } catch (error) {
+      console.log(error);
+      return setQueue((tasks) =>
+        tasks.map((task) => {
+          if (task.id === currentTask.id) {
+            return {
+              ...task,
+              processing: false,
+              error: "Something went wrong. Please try again.",
+            } as Task;
+          }
+
+          return task;
+        })
+      );
+    }
+
+    setQueue((tasks) =>
+      tasks.map((task) => {
+        if (task.id === currentTask.id) {
+          return {
+            ...task,
+            processing: false,
+            done: true,
           } as Task;
         }
 

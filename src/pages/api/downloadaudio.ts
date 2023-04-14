@@ -12,7 +12,8 @@ export default async function handler(
 
   try {
     const folder = "./audio";
-    const output = path.join(folder, `${task.videoId}.webm`);
+    const file = `${task.videoId}.webm`;
+    const output = path.join(folder, file);
 
     await new Promise((resolve) => {
       ytdl(task.videoId, {
@@ -25,7 +26,7 @@ export default async function handler(
         });
     });
 
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, file });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ ok: false, error });
