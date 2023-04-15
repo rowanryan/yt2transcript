@@ -136,7 +136,9 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
-    if (queue.length > 0) {
+    const processing = queue.find((task) => task.processing);
+
+    if (queue.length > 0 && !processing) {
       executeStep1();
     }
   }, [queue]);
