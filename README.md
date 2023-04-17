@@ -5,6 +5,7 @@ This is a webapp to automatically transcribe YouTube videos, using the OpenAI Wh
 ## What do I need?
 
 All you need is an OpenAI API key to fill in the form.
+The environment variable needed is: OPENAI_API_KEY
 
 ## How do I deploy this?
 
